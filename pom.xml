@@ -34,12 +34,12 @@
 
 	<modules>
 		<module>slf4j-api</module>
-    <module>slf4j-simple</module>  
+    <module>slf4j-simple</module>
     <module>slf4j-nop</module>
 		<module>slf4j-jdk14</module>
     <module>slf4j-log4j12</module>
     <module>slf4j-jcl</module>
-    <module>slf4j-ext</module>  
+    <module>slf4j-ext</module>
     <module>jcl-over-slf4j</module>
     <module>jcl104-over-slf4j</module>
     <module>log4j-over-slf4j</module>
@@ -47,6 +47,7 @@
     <module>integration</module>
     <module>slf4j-site</module>
     <module>slf4j-migrator</module>
+    <module>slf4j-android</module>
   </modules>
 
 	<dependencies>
@@ -58,7 +59,7 @@
 		</dependency>
 	</dependencies>
 
- 
+
  <dependencyManagement>
     <dependencies>
 
@@ -84,7 +85,7 @@
       <groupId>ch.qos.cal10n</groupId>
       <artifactId>cal10n-api</artifactId>
       <version>${cal10n.version}</version>
-    </dependency>		
+    </dependency>
 
    </dependencies>
  </dependencyManagement>
@@ -107,7 +108,7 @@
 					<target>1.3</target>
 				</configuration>
 			</plugin>
- 
+
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-surefire-plugin</artifactId>
@@ -120,15 +121,15 @@
 						<exclude>**/PackageTest.java</exclude>
 					</excludes>
 				</configuration>
-			</plugin>		
+			</plugin>
 
 			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>        
+				<groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-source-plugin</artifactId>
         <executions>
           <execution>
             <phase>package</phase>
-            <goals>              
+            <goals>
               <goal>jar</goal>
             </goals>
           </execution>
@@ -196,7 +197,7 @@
 
   <profiles>
     <profile>
-      <id>skipTests</id>     
+      <id>skipTests</id>
       <properties>
         <maven.test.skip>true</maven.test.skip>
       </properties>
@@ -241,7 +242,7 @@
             <enabled>false</enabled>
           </releases>
           <snapshots>
-            <enabled>true</enabled> 
+            <enabled>true</enabled>
           </snapshots>
         </pluginRepository>
       </pluginRepositories>
@@ -258,11 +259,11 @@
         <enabled>false</enabled>
       </releases>
       <snapshots>
-        <enabled>true</enabled> 
+        <enabled>true</enabled>
      </snapshots>
     </pluginRepository>
   </pluginRepositories>
-  
+
 	<reporting>
 		<plugins>
 			<plugin>
@@ -276,8 +277,8 @@
 				<reportSets>
 					<reportSet><reports/></reportSet>
 				</reportSets>
-			</plugin>	    
-      
+			</plugin>
+
       <plugin>
         <artifactId>maven-assembly-plugin</artifactId>
         <version>2.1</version>
@@ -307,14 +308,14 @@
     </plugins>
 
 	</reporting>
-	
-	  
+
+
   <scm>
 		<connection>scm:svn:http://svn.slf4j.org/repos/slf4j/trunk</connection>
 		<developerConnection>scm:svn:https://svn.slf4j.org/repos/slf4j/trunk</developerConnection>
 		<url>http://svn.slf4j.org/viewvc/slf4j/trunk/</url>
 	</scm>
-	
+
 	<distributionManagement>
 		<site>
 			<id>pixie</id>
@@ -327,5 +328,5 @@
     </repository>
 
 	</distributionManagement>
-  
+
 </project>
