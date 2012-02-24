@@ -78,7 +78,7 @@
     </li>
 
     <li>
-      <a href="#maven2">What about Maven 2 transitive
+      <a href="#maven2">What about Maven transitive
       dependencies?
       </a>
     </li>
@@ -194,12 +194,13 @@
     
     <dd>
       <p>In short, libraries and other embedded components should
-      consider SLF4J for their logging needs because libraries
-      cannot afford to impose their choice of logging system on the
-      end-user. On the other hand, it does not necessarily make
-      sense for stand-alone applications to use SLF4J. Stand-alone
-      applications can invoke the logging system of their choice
-      directly.
+      consider SLF4J for their logging needs because libraries cannot
+      afford to impose their choice of logging framework on the
+      end-user. On the other hand, it does not necessarily make sense
+      for stand-alone applications to use SLF4J. Stand-alone
+      applications can invoke the logging framework of their choice
+      directly. In the case of logback, the question is moot because
+      logback exposes its logger API via SLF4J.
       </p>
       
       <p>SLF4J is only a facade, meaning that it does not provide a
@@ -358,25 +359,27 @@
     </dt>
 
     <dd>
-      <p>With rare theoretical exceptions, SLF4J versions are backward
-      compatible. This means than you can upgrade from SLF4J version
-      1.0 to any later version without problems.</p>
+      <p>From the clients perspective, the SLF4J API is backward
+      compatible for all versions. This means than you can upgrade
+      from SLF4J version 1.0 to any later version without
+      problems. Code compiled with <em>slf4j-api-versionN.jar</em>
+      will work with <em>slf4j-api-versionM.jar</em> for any versionN
+      and any versionM. <b>To date, binary compatibility in slf4j-api
+      has never been broken.</b></p>
 
       <p>However, while the SLF4J API is very stable from the client's
-      perspective, SLF4J bindings such as slf4j-simple or
-      slf4j-log4j12 may require a specific version of slf4j-api. <span
-      class="redBold">Mixing different versions of slf4j artifacts can
-      be problematic and is strongly discouraged. </span> For
-      instance, if you are using slf4j-api-1.5.6.jar, then you should
-      also use slf4j-simple-1.5.6.jar, using slf4j-simple-1.4.2.jar
-      will not work.
+      perspective, SLF4J bindings, e.g. slf4j-simple.jar or
+      slf4j-log4j12.jar, may require a specific version of slf4j-api.
+      Mixing different versions of slf4j artifacts can be problematic
+      and is strongly discouraged. For instance, if you are using
+      slf4j-api-1.5.6.jar, then you should also use
+      slf4j-simple-1.5.6.jar, using slf4j-simple-1.4.2.jar will not
+      work.
       </p>        
 
       <p>At initialization time, if SLF4J suspects that there may be a
       version mismatch problem, it emits a warning about the said
-      mismatch. For the exact details of the version mismatch
-      detection mechanism, please refer to the <a
-      href="#version_checks">relevant entry</a> in this FAQ.
+      mismatch. 
       </p>
 
       <hr />
@@ -397,13 +400,13 @@
 org.slf4j.impl.StaticLoggerBinder.SINGLETON from class org.slf4j.LoggerFactory
    at org.slf4j.LoggerFactory.&lt;clinit>(LoggerFactory.java:60)</pre>
 
-   <p>This error is caused by the static initilizer of the
-   <code>LoggerFactory</code> class attempting to directly access
-   the SINGLETON field of
-   <code>org.slf4j.impl.StaticLoggerBinder</code>. While this was
-   allowed in SLF4J 1.5.5 and earlier, in 1.5.6 and later the
-   SINGLETON field has been marked as private access.
-   </p>
+      <p>This error is caused by the static initilizer of the
+      <code>LoggerFactory</code> class attempting to directly access
+      the SINGLETON field of
+      <code>org.slf4j.impl.StaticLoggerBinder</code>. While this was
+      allowed in SLF4J 1.5.5 and earlier, in 1.5.6 and later the
+      SINGLETON field has been marked as private access.
+      </p>
 
 
       <p>If you get the exception shown above, then you are using an
@@ -429,6 +432,10 @@ org.slf4j.impl.StaticLoggerBinder.SINGLETON from class org.slf4j.LoggerFactory
       dependecy on slf4j-api matching the version of the declared
       binding will make the problem go away.
       </p>
+
+      <p>Please also read the FAQ entry on <a
+      href="#compatibility">backward compatibility</a> for a more
+      general explanation.</p>
 
       <hr />
     </dd>
@@ -531,8 +538,8 @@ org.slf4j.impl.StaticLoggerBinder.SINGLETON from class org.slf4j.LoggerFactory
       to wrap SLF4J and link with it only if it is already present on
       the classpath, making SLF4J an optional dependency of Wombat. In
       addition to solving the dependency problem, the wrapper will
-      isolate Wombat from SLF4J;s API ensuring that logging in Wombat
-      is future-proof.
+      isolate Wombat from SLF4J's API ensuring that logging in Wombat
+      is future-proof. 
       </p>
 
       <p>On the other hand, any SLF4J-wrapper by definition depends on
@@ -541,15 +548,21 @@ org.slf4j.impl.StaticLoggerBinder.SINGLETON from class org.slf4j.LoggerFactory
       along, code that uses the wrapper will be equally difficult to
       migrate to the new API as code that used SLF4J directly. Thus,
       the wrapper is not likely to future-proof your code, but to make
-      it heavier by adding an additional indirection on top SLF4J
-      which is an indirection in itself.
+      it more complex by adding an additional indirection on top of
+      SLF4J, which is an indirection in itself. 
       </p>
 
-      <p>While one can come up with a seemingly working SLF4J-wrapper
-      within hours, many small technical issues will emerge over time
-      which Wombat developers will have to deal with. Note that SLF4J
-      has evolved over several years and has 170 bug reports filed
-      against it.</p>
+      <p>It is actually worse than that. Wrappers will need to depend
+      on certain internal SLF4J interfaces which change from time to
+      time, contrary to the client-facing API which never
+      changes. Thus, wrappers are usually dependent on the major
+      version they were compiled with. A wrapper compiled against
+      SLF4J version 1.5.x will not work with SLF4J 1.6 whereas client
+      code using <code>org.slf4j.Logger</code>,
+      <code>LoggerFactory</code>, <code>MarkerFactory</code>,
+      <code>org.slf4j.Marker</code>, and <code>MDC</code> will work
+      fine with any SLF4J version from version 1.0 and onwards.
+      </p>
 
       <p>It is reasonable to assume that in most projects Wombat will
       be one dependency among many.  If each library had its own
@@ -558,33 +571,57 @@ org.slf4j.impl.StaticLoggerBinder.SINGLETON from class org.slf4j.LoggerFactory
       logging framework, namely SLF4J, the user of Wombat would have
       to detail with Wombat's logging wrapper as well.  The problem
       will be compounded by each framework that comes up with its own
-      wrapper in order to make SLF4J optional.  (Configuring 5
-      different logging wrappers is not exactly exciting nor
-      endearing.)
+      wrapper in order to make SLF4J optional.  (Configuring or
+      dealing with the intricacies of five different logging wrappers
+      is not exactly exciting nor endearing.) 
       </p>
 
-      <p>For this reason, developers of frameworks should resist the
-      temptation to write their own logging wrapper. Not only is it a
-      waste of time of the developer, it will actually make life more
-      difficult for the users of said frameworks.
+      <p>The <a
+      href="http://velocity.apache.org/engine/devel/developer-guide.html#Configuring_Logging">logging
+      strategy adopted by the Velocity project</a> is a good example
+      of the "custom logging abstraction" anti-pattern. By adopting an
+      independent logging abstraction strategy, Velocity developers
+      have made life harder for themselves, but more importantly, they
+      made life harder for their users.
+      </p>
+
+      <p>Some projects try to detect the presence of SLF4J on the
+      class path and switch to it if present. While this approach
+      seems transperent enough, it will result in erroneous location
+      information. Underlying logging frameworks will print the
+      location (class name and line number) of the wrapper instead of
+      the real caller. Then there is the question of API coverage as
+      SLF4J support MDC and markers in addition to parameterized
+      logging.  While one can come up with a seemingly working
+      SLF4J-wrapper within hours, many technical issues will emerge
+      over time which Wombat developers will have to deal with. Note
+      that SLF4J has evolved over several years and has 170 bug
+      reports filed against it.</p>
+
+      <p>For the above reasons, developers of frameworks should resist
+      the temptation to write their own logging wrapper. Not only is
+      it a waste of time of the developer, it will actually make life
+      more difficult for the users of said frameworks and make logging
+      code paradoxically more vulnerable to change.
       </p>
     </dd>
 
 
    <!-- ======================================================= -->
 
-    <dt><a name="maven2" href="#maven2">What about Maven2
+    <dt><a name="maven2" href="#maven2">What about Maven
     transitive dependencies? </a>
     </dt>
     
     <dd>
-      <p>As an author of a library built with Maven2, you might
-      want to test your application using a binding, say
-      slf4j-log4j12 or logback-classic, without forcing log4j or
-      logback-classic as a dependency upon your users. As of SLF4J
-      version 1.3, this quite easy to accomplish. But first, since
-      your library's code depends on the SLF4J API you will need to
-      declare slf4j-api as a compile-time (default scope)
+      <p>As an author of a library built with Maven, you might want to
+      test your application using a binding, say slf4j-log4j12 or
+      logback-classic, without forcing log4j or logback-classic as a
+      dependency upon your users. This is rather easy to accomplish.
+      </p>
+
+      <p>Given that your library's code depends on the SLF4J API, you
+      will need to declare slf4j-api as a compile-time (default scope)
       dependency.
       </p>
       <pre class="prettyprint source">&lt;dependency&gt;
@@ -609,30 +646,41 @@ org.slf4j.impl.StaticLoggerBinder.SINGLETON from class org.slf4j.LoggerFactory
       any SLF4J-binding or any underlying logging system.
       </p>
       
+      <p>Note that as of SLF4J version 1.6, in the absence of an SLF4J
+      binding, slf4j-api will default to a no-operation
+      implementation.
+      </p>
+
       <hr/>
       
     </dd>
     
     
     <dt>
-      <a name="excludingJCL">How do I exclude commons-logging as a
-      Maven dependency?
+      <a name="excludingJCL" href="#excludingJCL">How do I exclude
+      commons-logging as a Maven dependency?
       </a>
     </dt>
     
     <dd>
-      <p>A large number of Maven projects declare commons-logging as a
-      dependency. Thus, if you wish to migrate to SLF4J or use
-      jcl-over-slf4j, you would need to declare a commons-logging
-      exclusion in all of your dependencies which transitively depend
-      on commons-logging. This can be an error prone process. To
-      alleviate the pain, Erik van Oosten has developed a <a
-      href="http://day-to-day-stuff.blogspot.com/2007/10/announcement-version-99-does-not-exist.html">clever
-      hack around this problem.</a>
+      <p><b>alternative 1) explicit exlusion</b></p>
+
+      <p>Many software projects using Maven declare commons-logging as
+      a dependency. Therefore, if you wish to migrate to SLF4J or use
+      jcl-over-slf4j, you would need to exclude commons-logging in all
+      of your project's dependencies which transitively depend on
+      commons-logging. <a
+      href="http://maven.apache.org/guides/introduction/introduction-to-optional-and-excludes-dependencies.htm">Dependency
+      exclusion</a> is described in the Maven documentation. Excluding
+      commons-logging explicitly for multiple dependencies distributed
+      on several <em>pom.xml</em> files can be a cumbersome and a
+      relatively error prone process.
       </p>
 
-      <p>Alternatively, commons-logging can be rather simply and
-      conveniently excluded as a dependency by declaring it in the
+      <p><b>alternative 2) provided scope</b></p>
+
+      <p>Commons-logging can be rather simply and conveniently
+      excluded as a dependency by declaring it in the
       <em>provided</em> scope within the pom.xml file of your
       project. The actual commons-logging classes would be provided by
       jcl-over-slf4j. This translates into the following pom file
@@ -650,6 +698,85 @@ org.slf4j.impl.StaticLoggerBinder.SINGLETON from class org.slf4j.LoggerFactory
   &lt;artifactId>jcl-over-slf4j&lt;/artifactId>
   &lt;version>${project.version}&lt;/version>
 &lt;/dependency></pre>
+
+      <p>The first dependency declaration essentially states that
+      commons-logging will be "somehow" provided by your
+      environment. The second decleration includes jcl-over-slf4j into
+      your project. As jcl-over-slf4j is a perfect binary-compatible
+      replacement for commons-logging, the first assertion becomes
+      true.
+      </p>
+
+      <p>Unfortunately, while declaring commons-logging in the
+      provided scope gets the job done, your IDE, e.g. Eclipse, will
+      still place <em>commons-logging.jar</em> on your projet's class
+      path as seen by your IDE. You would need to make sure that
+      <em>jcl-over-slf4j.jar</em> is visible before
+      <em>commons-logging.jar</em> by your IDE.
+      </p>
+
+      <p><b>alternative 3) empty artifacts</b></p>
+      
+      <p>An alternative approach is to depend on an <b>empty</b>
+      <em>commons-logging.jar</em> artifact. This clever <a
+      href="http://day-to-day-stuff.blogspot.com/2007/10/announcement-version-99-does-not-exist.html">approach
+      first was imagined</a> imagined and initially supported by Erik van
+      Oosten.
+      </p>
+
+      <p>The empty artifact is available from a <a
+      href="http://version99.qos.ch">http://version99.qos.ch</a> a
+      high-availability Maven repository, replicated on several hosts
+      located in different geographical regions.</p>
+
+      <p>The following decleration adds the version99 repository to
+      the set of remote repositories searched by Maven. This
+      repository contains empty artifacts for commons-logging and
+      log4j. By the way, if you use the version99 repository, please
+      drop us a line at &lt;version99 AT qos.ch&gt;.
+      </p>
+
+      <pre class="prettyprint source">&lt;repositories>
+  &lt;repository>
+    &lt;id>version99&lt;/id>
+    &lt;!-- highly available repository serving empty artifacts --&gt;
+    &lt;url>http://version99.qos.ch/&lt;/url>
+  &lt;/repository>
+&lt;/repositories></pre>
+      
+    <p>Declaring version 99-empty of commons-logging in the
+    <code>&lt;dependencyManagement></code> section of your project
+    will direct all transtive dependencies for commons-logging to
+    import version 99-empty, thus nicely addressing the
+    commons-logging exclusion problem. The classes for commons-logging
+    will be provided by jcl-over-slf4j. The following lines declare
+    commons-logging version 99-empty (in the dependency management
+    section) and declare jcl-over-slf4j as a dependency.
+    </p>
+    
+<pre class="prettyprint source">&lt;dependencyManagement>
+  &lt;dependencies>
+    &lt;dependency>
+      &lt;groupId>commons-logging&lt;/groupId>
+      &lt;artifactId>commons-logging&lt;/artifactId>
+      &lt;version><b>99-empty</b>&lt;/version>
+    &lt;/dependency>
+    ... other declarations...
+  &lt;/dependencies>
+&lt;/dependencyManagement>
+
+&lt;!-- Do not forget to declare a dependency on jcl-over-slf4j in the        --&gt;
+&lt;!-- dependencies section. Note that the dependency on commons-logging     --&gt;
+&lt;!-- will be imported transitively. You don't have to declare it yourself. --&gt;
+&lt;dependencies>
+  &lt;dependency>
+    &lt;groupId>org.slf4j&lt;/groupId>
+    &lt;artifactId>jcl-over-slf4j&lt;/artifactId>
+    &lt;version>${project.version}&lt;/version>
+  &lt;/dependency>
+  ... other dependency declarations
+&lt;/dependencies>
+</pre>
 
 
     </dd>
@@ -951,38 +1078,63 @@ logger.debug("The new entry is {}.", entry);</pre>
     
     <dt>
       <a name="fatal" href="#fatal"> Why doesn't the
-      <code>org.slf4j.Logger</code> interface have methods for the FATAL
-      level? </a>
+      <code>org.slf4j.Logger</code> interface have methods for the
+      FATAL level? </a>
     </dt>
     
     <dd>      
-      <p>From the stand point of a logging system, the distinction
-      between a fatal error and an error is usually not very
-      useful. Most programmers exit the application when a fatal
-      error is encountered. However, a logging library cannot (and
-      should not) decide on its own to terminate an
-      application. The initiative to exit the application must be
-      left to the developer.
+      <p>The <a href="apidocs/org/slf4j/Marker.html">Marker</a>
+      interface, part of the <code>org.slf4j</code> package, renders
+      the FATAL level largely redundant. If a given error requires
+      attention beyond that allocated for ordinary errors, simply mark
+      the logging statement with a specially designated marker which
+      can be named "FATAL" or any other name to your liking.
       </p>
-      
-      
-      <p>Thus, the most the FATAL level can do is to
-      <em>highlight</em> a given error as the cause for
-      application to crash. However, errors are by definition
-      exceptional events that merit attention. If a given
-      situation causes errors to be logged, the causes should be
-      attended to as soon as possible. However, if the "error" is
-      actually a normal situation which cannot be prevented but
-      merits being aware of, then it should be marked as WARN, not
-      ERROR.
+
+      <p>Here is an example,</p>
+    
+<pre class="prettyprint">import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.slf4j.Marker;
+import org.slf4j.MarkerFactory;
+
+class Bar {
+  void foo() {
+    <b>Marker fatal = MarkerFactory.getMarker("FATAL");</b>
+    Logger logger = LoggerFactory.getLogger("aLogger");
+
+    try {
+      ... obtain a JDBC connection
+    } catch (JDBException e) {
+      logger.error(<b>fatal</b>, "Failed to obtain JDBC connection", e);
+    }
+  }
+}</pre>
+
+
+      <p>While markers are part of the SLF4J API, only logback
+      supports markers off the shelf. For example, if you add the
+      <code>%marker</code> conversion word to its pattern, logback's
+      <code>PatternLayout</code> will add marker data to its
+      output. Marker data can be used to <a
+      href="http://logback.qos.ch/manual/filters.html">filter
+      messages</a> or even <a
+      href="http://logback.qos.ch/manual/appenders.html#OnMarkerEvaluator">trigger</a>
+      an outgoing email <a
+      href="http://logback.qos.ch/recipes/emailPerTransaction.html">at
+      the end of an individual transaction</a>.
       </p>
-      
-      <p>Assuming the ERROR level designates exceptional situations
-      meriting close attention, we are inclined to believe that the
-      FATAL level is superfluous.
+
+      <p>In combination with logging frameworks such as log4j and
+      java.util.logging which do not support markers, marker data will
+      be silently ignored.</p>
+
+      <p>Markers add a new dimension with infinite possible values for
+      processing log statements compared to five values, namely ERROR,
+      WARN, INFO, DEBUG and TRACE, allowed by levels. At present time,
+      only logback supports marker data. However, nothing prevents
+      other logging frameworks from making use of marker data.
       </p>
-      
-      
       <hr />
     </dd>
     
@@ -1086,50 +1238,33 @@ logger.debug("The new entry is {}.", entry);</pre>
 
 
     <dd>
-      <p>No. The SLF4J API does not support parametization in the
-    presence of an exception. Thus,
+      <p>Yes, as of SLF4J 1.6.0, but not in previous versions. The
+      SLF4J API supports parametrization in the presence of an
+      exception, assuming the exception is the last parameter. Thus,
     </p>
     <pre class="prettyprint">String s = "Hello world";
 try {
-  throw new NumberFormatException("...");
+  Integer i = Integer.valueOf(s);
 } catch (NumberFormatException e) {
   logger.error("Failed to format {}", s, e);
 }</pre>
 
-    <p>will <b>NOT</b> print the <code>NumberFormatException</code> nor its
-    stack trace. The java compiler will invoke the <a
-    href="http://www.slf4j.org/apidocs/org/slf4j/Logger.html#error%28java.lang.String,%20java.lang.Object,%20java.lang.Object%29">error
-    method taking a String and two Object arguments</a>, which,
-    contrary to the programmer's most probable intention, will cause
-    the <code>NumberFormatException</code> to be ignored. This is one
-    of the unfortunate warts present in the SLF4J API.
-    </p>
+     <p>will print the <code>NumberFormatException</code> with its
+     stack trace as expected. The java compiler will invoke the <a
+     href="http://www.slf4j.org/apidocs/org/slf4j/Logger.html#error%28java.lang.String,%20java.lang.Object,%20java.lang.Object%29">error
+     method taking a String and two Object arguments</a>. SLF4J, in
+     accordance with the programmer's most probable intention, will
+     interpret <code>NumberFormatException</code> instance as a
+     throwable instead of an unused <code>Object</code> parameter. In
+     SLF4J versions prior to 1.6.0, the
+     <code>NumberFormatException</code> instance was simply ignored.
+     </p>
 
-    <p>The only way to have the exception treated properly, is to
-    invoke the <a
-    href="http://www.slf4j.org/apidocs/org/slf4j/Logger.html#error%28java.lang.String,%20java.lang.Throwable%29">error
-    method taking a String and a Throwable</a>. The correct code is
-    then,</p>
-
- <pre class="prettyprint">String s = "Hello world";
-try {
-  throw new NumberFormatException("...");
-} catch (NumberFormatException e) {
-  // concatenation instead of parametrization!
-  <b>logger.error("Failed to format "+ s, e);</b>
-}</pre>
+     <p>If the exception is not the last argument, it will be treated
+     as a plain object and its stack trace will NOT be printed.
+     However, such situations should not occur in practice.
+     </p>
     
-    <p>The second form MUST be employed in the presence of
-    exceptions. Given that exceptions are rare by definition, the cost
-    of concatenating "Failed format " and <em>s</em> should be
-    negligible in pracice. 
-    </p>
-
-    <p>If you are user of the SLF4J API, and do not understand the
-    explanations in this question, you are advised to dwell on the
-    matter until it becomes clear. You have been warned.
-    </p>
-
     </dd>
 
 
@@ -1239,9 +1374,9 @@ try {
     
     <dd>
       <p>The version check performed by SLF4J API during its
-      initialization is an elective process. Conforming SLF4J
-      implementations may choose <em>not</em> to participate, in
-      which case, no version check will be performed.
+      initialization is an <em>elective</em> process. Conforming SLF4J
+      implementations may choose <em>not</em> to participate, in which
+      case, no version check will be performed.
       </p>
       
       <p>However, if an SLF4J implementation decides to participate,
@@ -1267,23 +1402,17 @@ try {
       <p><b>As of SLF4J 1.5.5</b>, all bindings shipped within the
       SLF4J distribution, e.g. slf4j-logj12, slf4j-simple and
       slf4j-jdk14, declare the REQUESTED_API_VERSION field with a
-      value equal to their SLF4J version. It follows that, for
-      example if slf4j-simple-1.5.6.jar is mixed with
-      slf4j-api-1.5.5.jar, then a version mismatch warning will be
-      issued. Note that SLF4J versions prior to 1.5.5 did not have a
-      version check mechanism.  Only slf4j-api-1.5.5.jar and later
-      can emit version mismatch warnings. (Actually, version 1.5.4
-      offered a check policy which was much too restrictive and
-      inconsistent with the size of our user base. Consequently,
-      SLF4J version 1.5.5 was released just a day after 1.5.4.)
+      value equal to their SLF4J version. It follows that, for example
+      if slf4j-simple-1.5.8.jar is mixed with slf4j-api-1.6.0.jar,
+      given that 1.5.8 is not on the compatibility list of SLF4J
+      version 1.6.x, a version mismatch warning will be issued.
       </p>
-      
-      <p>Given its large installed user base and several external
-      implementations, it would have been unwise to expect all SLF4J
-      implementations to closely follow SLF4J's release schedule, let
-      alone align their release schedules with SLF4J. Hence, the
-      elective version check policy.
+
+      <p>Note that SLF4J versions prior to 1.5.5 did not have a
+      version check mechanism.  Only slf4j-api-1.5.5.jar and later can
+      emit version mismatch warnings.
       </p>
+
       
     </dd>
     

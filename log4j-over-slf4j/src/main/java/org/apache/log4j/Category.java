@@ -1,24 +1,28 @@
 /*
  * Copyright 2001-2004 The Apache Software Foundation.
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *      http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.apache.log4j;
 
+import org.apache.log4j.helpers.NullEnumeration;
 import org.slf4j.LoggerFactory;
 import org.slf4j.Marker;
 import org.slf4j.MarkerFactory;
 import org.slf4j.spi.LocationAwareLogger;
+
+import java.util.Enumeration;
 
 /**
  * <p>
@@ -26,13 +30,13 @@ import org.slf4j.spi.LocationAwareLogger;
  * <code>org.apache.log4j.Category</code> class (as found in log4j 1.2) by
  * delegation of all calls to a {@link org.slf4j.Logger} instance.
  * </p>
- * 
+ *
  * <p>
  * Log4j's <code>trace</code>, <code>debug()</code>, <code>info()</code>,
  * <code>warn()</code>, <code>error()</code> printing methods are directly
  * mapped to their SLF4J equivalents. Log4j's <code>fatal()</code> printing
  * method is mapped to SLF4J's <code>error()</code> method with a FATAL marker.
- * 
+ *
  * @author S&eacute;bastien Pennec
  * @author Ceki G&uuml;lc&uuml;
  */
@@ -45,8 +49,6 @@ public class Category {
   protected org.slf4j.Logger slf4jLogger;
   private org.slf4j.spi.LocationAwareLogger locationAwareLogger;
 
-  
-  
   private static Marker FATAL_MARKER = MarkerFactory.getMarker("FATAL");
 
   Category(String name) {
@@ -65,21 +67,26 @@ public class Category {
     return Log4jLoggerFactory.getLogger(name);
   }
 
+
   /**
    * Returns the obvious.
-   * 
+   *
    * @return
    */
   public String getName() {
     return name;
   }
 
+  public Enumeration getAllAppenders() {
+    return NullEnumeration.getInstance();
+  }
+
   /**
    * Return the level in effect for this category/logger.
-   * 
+   *
    * <p>
    * The result is computed by simulation.
-   * 
+   *
    * @return
    */
   public Level getEffectiveLevel() {
@@ -101,7 +108,7 @@ public class Category {
   /**
    * Returns the assigned {@link Level}, if any, for this Category. This
    * implementation always returns null.
-   * 
+   *
    * @return Level - the assigned Level, can be <code>null</code>.
    */
   final public Level getLevel() {
@@ -147,7 +154,7 @@ public class Category {
    * Determines whether the priority passed as parameter is enabled in the
    * underlying SLF4J logger. Each log4j priority is mapped directly to its
    * SLF4J equivalent, except for FATAL which is mapped as ERROR.
-   * 
+   *
    * @param p
    *          the priority to check against
    * @return true if this logger is enabled for the given level, false
@@ -173,9 +180,10 @@ public class Category {
 
   void differentiatedLog(Marker marker, String fqcn, int level, Object message,
       Throwable t) {
+
     String m = convertToString(message);
     if (locationAwareLogger != null) {
-      locationAwareLogger.log(marker, fqcn, level, m, t);
+      locationAwareLogger.log(marker, fqcn, level, m, null, t);
     } else {
       switch (level) {
       case LocationAwareLogger.TRACE_INT:
@@ -301,6 +309,7 @@ public class Category {
   private int priorityToLevelInt(Priority p) {
     switch (p.level) {
     case Level.TRACE_INT:
+    case Level.X_TRACE_INT:
       return LocationAwareLogger.TRACE_INT;
     case Priority.DEBUG_INT:
       return LocationAwareLogger.DEBUG_INT;

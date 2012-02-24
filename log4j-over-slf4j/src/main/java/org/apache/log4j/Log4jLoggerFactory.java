@@ -1,12 +1,12 @@
 /*
  * Copyright 2001-2004 The Apache Software Foundation.
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *      http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -44,8 +44,8 @@ class Log4jLoggerFactory {
       String part2 = "See also " + LOG4J_DELEGATION_LOOP_URL
           + " for more details.";
 
-      Util.reportFailure(part1);
-      Util.reportFailure(part2);
+      Util.report(part1);
+      Util.report(part2);
             throw new IllegalStateException(part1 + part2);
     } catch (ClassNotFoundException e) {
       // this is the good case

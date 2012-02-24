@@ -1,7 +1,7 @@
-/* 
- * Copyright (c) 2004-2008 QOS.ch
+/**
+ * Copyright (c) 2004-2011 QOS.ch
  * All rights reserved.
- * 
+ *
  * Permission is hereby granted, free  of charge, to any person obtaining
  * a  copy  of this  software  and  associated  documentation files  (the
  * "Software"), to  deal in  the Software without  restriction, including
@@ -9,10 +9,10 @@
  * distribute,  sublicense, and/or sell  copies of  the Software,  and to
  * permit persons to whom the Software  is furnished to do so, subject to
  * the following conditions:
- * 
+ *
  * The  above  copyright  notice  and  this permission  notice  shall  be
  * included in all copies or substantial portions of the Software.
- * 
+ *
  * THE  SOFTWARE IS  PROVIDED  "AS  IS", WITHOUT  WARRANTY  OF ANY  KIND,
  * EXPRESS OR  IMPLIED, INCLUDING  BUT NOT LIMITED  TO THE  WARRANTIES OF
  * MERCHANTABILITY,    FITNESS    FOR    A   PARTICULAR    PURPOSE    AND
@@ -20,13 +20,14 @@
  * LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
  * OF CONTRACT, TORT OR OTHERWISE,  ARISING FROM, OUT OF OR IN CONNECTION
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+ *
  */
-
 
 package org.slf4j.impl;
 
 import org.apache.commons.logging.Log;
 import org.slf4j.Logger;
+import org.slf4j.helpers.FormattingTuple;
 import org.slf4j.helpers.MarkerIgnoringBase;
 import org.slf4j.helpers.MessageFormatter;
 
@@ -85,8 +86,8 @@ public final class JCLLoggerAdapter extends MarkerIgnoringBase {
    */
   public void trace(String format, Object arg) {
     if (log.isDebugEnabled()) {
-      String msgStr = MessageFormatter.format(format, arg);
-      log.trace(msgStr);
+      FormattingTuple ft = MessageFormatter.format(format, arg);
+      log.trace(ft.getMessage(), ft.getThrowable());
     }
   }
 
@@ -108,8 +109,8 @@ public final class JCLLoggerAdapter extends MarkerIgnoringBase {
    */
   public void trace(String format, Object arg1, Object arg2) {
     if (log.isDebugEnabled()) {
-      String msgStr = MessageFormatter.format(format, arg1, arg2);
-      log.trace(msgStr);
+      FormattingTuple ft = MessageFormatter.format(format, arg1, arg2);
+      log.trace(ft.getMessage(), ft.getThrowable());
     }
   }
   
@@ -128,8 +129,8 @@ public final class JCLLoggerAdapter extends MarkerIgnoringBase {
    */
   public void trace(String format, Object[] argArray) {
     if (log.isDebugEnabled()) {
-      String msgStr = MessageFormatter.arrayFormat(format, argArray);
-      log.trace(msgStr);
+      FormattingTuple ft = MessageFormatter.arrayFormat(format, argArray);
+      log.trace(ft.getMessage(), ft.getThrowable());
     }
   }
   
@@ -183,8 +184,8 @@ public final class JCLLoggerAdapter extends MarkerIgnoringBase {
    */
   public void debug(String format, Object arg) {
     if (log.isDebugEnabled()) {
-      String msgStr = MessageFormatter.format(format, arg);
-      log.debug(msgStr);
+      FormattingTuple ft = MessageFormatter.format(format, arg);
+      log.debug(ft.getMessage(), ft.getThrowable());
     }
   }
 
@@ -206,8 +207,8 @@ public final class JCLLoggerAdapter extends MarkerIgnoringBase {
    */
   public void debug(String format, Object arg1, Object arg2) {
     if (log.isDebugEnabled()) {
-      String msgStr = MessageFormatter.format(format, arg1, arg2);
-      log.debug(msgStr);
+      FormattingTuple ft = MessageFormatter.format(format, arg1, arg2);
+      log.debug(ft.getMessage(), ft.getThrowable());
     }
   }
   
@@ -226,8 +227,8 @@ public final class JCLLoggerAdapter extends MarkerIgnoringBase {
    */
   public void debug(String format, Object[] argArray) {
     if (log.isDebugEnabled()) {
-      String msgStr = MessageFormatter.arrayFormat(format, argArray);
-      log.debug(msgStr);
+      FormattingTuple ft = MessageFormatter.arrayFormat(format, argArray);
+      log.debug(ft.getMessage(), ft.getThrowable());
     }
   }
   
@@ -279,8 +280,8 @@ public final class JCLLoggerAdapter extends MarkerIgnoringBase {
 
   public void info(String format, Object arg) {
     if (log.isInfoEnabled()) {
-      String msgStr = MessageFormatter.format(format, arg);
-      log.info(msgStr);
+      FormattingTuple ft = MessageFormatter.format(format, arg);
+      log.info(ft.getMessage(), ft.getThrowable());
     }
   }
   /**
@@ -301,8 +302,9 @@ public final class JCLLoggerAdapter extends MarkerIgnoringBase {
    */
   public void info(String format, Object arg1, Object arg2) {
     if (log.isInfoEnabled()) {
-      String msgStr = MessageFormatter.format(format, arg1, arg2);
-      log.info(msgStr);
+
+      FormattingTuple ft = MessageFormatter.format(format, arg1, arg2);
+      log.info(ft.getMessage(), ft.getThrowable());
     }
   }
 
@@ -320,8 +322,8 @@ public final class JCLLoggerAdapter extends MarkerIgnoringBase {
    */
   public void info(String format, Object[] argArray) {
     if (log.isInfoEnabled()) {
-      String msgStr = MessageFormatter.arrayFormat(format, argArray);
-      log.info(msgStr);
+      FormattingTuple ft = MessageFormatter.arrayFormat(format, argArray);
+      log.info(ft.getMessage(), ft.getThrowable());
     }
   }
   
@@ -373,8 +375,8 @@ public final class JCLLoggerAdapter extends MarkerIgnoringBase {
    */
   public void warn(String format, Object arg) {
     if (log.isWarnEnabled()) {
-      String msgStr = MessageFormatter.format(format, arg);
-      log.warn(msgStr);
+      FormattingTuple ft = MessageFormatter.format(format, arg);
+      log.warn(ft.getMessage(), ft.getThrowable());
     }
   }
   
@@ -396,8 +398,8 @@ public final class JCLLoggerAdapter extends MarkerIgnoringBase {
    */
   public void warn(String format, Object arg1, Object arg2) {
     if (log.isWarnEnabled()) {
-      String msgStr = MessageFormatter.format(format, arg1, arg2);
-      log.warn(msgStr);
+      FormattingTuple ft = MessageFormatter.format(format, arg1, arg2);
+      log.warn(ft.getMessage(), ft.getThrowable());
     }
   }
   
@@ -415,8 +417,8 @@ public final class JCLLoggerAdapter extends MarkerIgnoringBase {
    */
   public void warn(String format, Object[] argArray) {
     if (log.isWarnEnabled()) {
-      String msgStr = MessageFormatter.arrayFormat(format, argArray);
-      log.warn(msgStr);
+      FormattingTuple ft = MessageFormatter.arrayFormat(format, argArray);
+      log.warn(ft.getMessage(), ft.getThrowable());
     }
   }
   
@@ -470,8 +472,8 @@ public final class JCLLoggerAdapter extends MarkerIgnoringBase {
    */
   public void error(String format, Object arg) {
     if (log.isErrorEnabled()) {
-      String msgStr = MessageFormatter.format(format, arg);
-      log.error(msgStr);
+      FormattingTuple ft = MessageFormatter.format(format, arg);
+      log.error(ft.getMessage(), ft.getThrowable());
     }
   }
   
@@ -493,8 +495,8 @@ public final class JCLLoggerAdapter extends MarkerIgnoringBase {
    */
   public void error(String format, Object arg1, Object arg2) {
     if (log.isErrorEnabled()) {
-      String msgStr = MessageFormatter.format(format, arg1, arg2);
-      log.error(msgStr);
+      FormattingTuple ft = MessageFormatter.format(format, arg1, arg2);
+      log.error(ft.getMessage(), ft.getThrowable());
     }
   }
 
@@ -512,8 +514,8 @@ public final class JCLLoggerAdapter extends MarkerIgnoringBase {
    */
   public void error(String format, Object[] argArray) {
     if (log.isErrorEnabled()) {
-      String msgStr = MessageFormatter.arrayFormat(format, argArray);
-      log.error(msgStr);
+      FormattingTuple ft = MessageFormatter.arrayFormat(format, argArray);
+      log.error(ft.getMessage(), ft.getThrowable());
     }
   }
   

@@ -1,36 +1,27 @@
-/*
- * Copyright (c) 2004-2005 SLF4J.ORG
- * Copyright (c) 2004-2005 QOS.ch
- *
+/**
+ * Copyright (c) 2004-2011 QOS.ch
  * All rights reserved.
  *
- * Permission is hereby granted, free of charge, to any person obtaining
- * a copy of this software and associated documentation files (the
+ * Permission is hereby granted, free  of charge, to any person obtaining
+ * a  copy  of this  software  and  associated  documentation files  (the
  * "Software"), to  deal in  the Software without  restriction, including
  * without limitation  the rights to  use, copy, modify,  merge, publish,
- * distribute, and/or sell copies of  the Software, and to permit persons
- * to whom  the Software is furnished  to do so, provided  that the above
- * copyright notice(s) and this permission notice appear in all copies of
- * the  Software and  that both  the above  copyright notice(s)  and this
- * permission notice appear in supporting documentation.
+ * distribute,  sublicense, and/or sell  copies of  the Software,  and to
+ * permit persons to whom the Software  is furnished to do so, subject to
+ * the following conditions:
+ *
+ * The  above  copyright  notice  and  this permission  notice  shall  be
+ * included in all copies or substantial portions of the Software.
  *
  * THE  SOFTWARE IS  PROVIDED  "AS  IS", WITHOUT  WARRANTY  OF ANY  KIND,
  * EXPRESS OR  IMPLIED, INCLUDING  BUT NOT LIMITED  TO THE  WARRANTIES OF
- * MERCHANTABILITY, FITNESS FOR  A PARTICULAR PURPOSE AND NONINFRINGEMENT
- * OF  THIRD PARTY  RIGHTS. IN  NO EVENT  SHALL THE  COPYRIGHT  HOLDER OR
- * HOLDERS  INCLUDED IN  THIS  NOTICE BE  LIABLE  FOR ANY  CLAIM, OR  ANY
- * SPECIAL INDIRECT  OR CONSEQUENTIAL DAMAGES, OR  ANY DAMAGES WHATSOEVER
- * RESULTING FROM LOSS  OF USE, DATA OR PROFITS, WHETHER  IN AN ACTION OF
- * CONTRACT, NEGLIGENCE  OR OTHER TORTIOUS  ACTION, ARISING OUT OF  OR IN
- * CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
- *
- * Except as  contained in  this notice, the  name of a  copyright holder
- * shall not be used in advertising or otherwise to promote the sale, use
- * or other dealings in this Software without prior written authorization
- * of the copyright holder.
+ * MERCHANTABILITY,    FITNESS    FOR    A   PARTICULAR    PURPOSE    AND
+ * NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
+ * LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
+ * OF CONTRACT, TORT OR OTHERWISE,  ARISING FROM, OUT OF OR IN CONNECTION
+ * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  *
  */
-
 package org.slf4j.impl;
 
 import java.util.logging.Level;
@@ -38,6 +29,7 @@ import java.util.logging.LogRecord;
 
 import org.slf4j.Logger;
 import org.slf4j.Marker;
+import org.slf4j.helpers.FormattingTuple;
 import org.slf4j.helpers.MarkerIgnoringBase;
 import org.slf4j.helpers.MessageFormatter;
 import org.slf4j.spi.LocationAwareLogger;
@@ -77,8 +69,8 @@ public final class JDK14LoggerAdapter extends MarkerIgnoringBase implements
   /**
    * Log a message object at level FINEST.
    * 
-   * @param msg -
-   *          the message object to be logged
+   * @param msg
+   *          - the message object to be logged
    */
   public void trace(String msg) {
     if (logger.isLoggable(Level.FINEST)) {
@@ -102,8 +94,8 @@ public final class JDK14LoggerAdapter extends MarkerIgnoringBase implements
    */
   public void trace(String format, Object arg) {
     if (logger.isLoggable(Level.FINEST)) {
-      String msgStr = MessageFormatter.format(format, arg);
-      log(SELF, Level.FINEST, msgStr, null);
+      FormattingTuple ft = MessageFormatter.format(format, arg);
+      log(SELF, Level.FINEST, ft.getMessage(), ft.getThrowable());
     }
   }
 
@@ -125,8 +117,8 @@ public final class JDK14LoggerAdapter extends MarkerIgnoringBase implements
    */
   public void trace(String format, Object arg1, Object arg2) {
     if (logger.isLoggable(Level.FINEST)) {
-      String msgStr = MessageFormatter.format(format, arg1, arg2);
-      log(SELF, Level.FINEST, msgStr, null);
+      FormattingTuple ft = MessageFormatter.format(format, arg1, arg2);
+      log(SELF, Level.FINEST, ft.getMessage(), ft.getThrowable());
     }
   }
 
@@ -146,8 +138,8 @@ public final class JDK14LoggerAdapter extends MarkerIgnoringBase implements
    */
   public void trace(String format, Object[] argArray) {
     if (logger.isLoggable(Level.FINEST)) {
-      String msgStr = MessageFormatter.arrayFormat(format, argArray);
-      log(SELF, Level.FINEST, msgStr, null);
+      FormattingTuple ft = MessageFormatter.arrayFormat(format, argArray);
+      log(SELF, Level.FINEST, ft.getMessage(), ft.getThrowable());
     }
   }
 
@@ -177,8 +169,8 @@ public final class JDK14LoggerAdapter extends MarkerIgnoringBase implements
   /**
    * Log a message object at level FINE.
    * 
-   * @param msg -
-   *          the message object to be logged
+   * @param msg
+   *          - the message object to be logged
    */
   public void debug(String msg) {
     if (logger.isLoggable(Level.FINE)) {
@@ -201,8 +193,8 @@ public final class JDK14LoggerAdapter extends MarkerIgnoringBase implements
    */
   public void debug(String format, Object arg) {
     if (logger.isLoggable(Level.FINE)) {
-      String msgStr = MessageFormatter.format(format, arg);
-      log(SELF, Level.FINE, msgStr, null);
+      FormattingTuple ft = MessageFormatter.format(format, arg);
+      log(SELF, Level.FINE, ft.getMessage(), ft.getThrowable());
     }
   }
 
@@ -224,8 +216,8 @@ public final class JDK14LoggerAdapter extends MarkerIgnoringBase implements
    */
   public void debug(String format, Object arg1, Object arg2) {
     if (logger.isLoggable(Level.FINE)) {
-      String msgStr = MessageFormatter.format(format, arg1, arg2);
-      log(SELF, Level.FINE, msgStr, null);
+      FormattingTuple ft = MessageFormatter.format(format, arg1, arg2);
+      log(SELF, Level.FINE, ft.getMessage(), ft.getThrowable());
     }
   }
 
@@ -245,8 +237,8 @@ public final class JDK14LoggerAdapter extends MarkerIgnoringBase implements
    */
   public void debug(String format, Object[] argArray) {
     if (logger.isLoggable(Level.FINE)) {
-      String msgStr = MessageFormatter.arrayFormat(format, argArray);
-      log(SELF, Level.FINE, msgStr, null);
+      FormattingTuple ft = MessageFormatter.arrayFormat(format, argArray);
+      log(SELF, Level.FINE, ft.getMessage(), ft.getThrowable());
     }
   }
 
@@ -276,8 +268,8 @@ public final class JDK14LoggerAdapter extends MarkerIgnoringBase implements
   /**
    * Log a message object at the INFO level.
    * 
-   * @param msg -
-   *          the message object to be logged
+   * @param msg
+   *          - the message object to be logged
    */
   public void info(String msg) {
     if (logger.isLoggable(Level.INFO)) {
@@ -300,8 +292,8 @@ public final class JDK14LoggerAdapter extends MarkerIgnoringBase implements
    */
   public void info(String format, Object arg) {
     if (logger.isLoggable(Level.INFO)) {
-      String msgStr = MessageFormatter.format(format, arg);
-      log(SELF, Level.INFO, msgStr, null);
+      FormattingTuple ft = MessageFormatter.format(format, arg);
+      log(SELF, Level.INFO, ft.getMessage(), ft.getThrowable());
     }
   }
 
@@ -323,8 +315,8 @@ public final class JDK14LoggerAdapter extends MarkerIgnoringBase implements
    */
   public void info(String format, Object arg1, Object arg2) {
     if (logger.isLoggable(Level.INFO)) {
-      String msgStr = MessageFormatter.format(format, arg1, arg2);
-      log(SELF, Level.INFO, msgStr, null);
+      FormattingTuple ft = MessageFormatter.format(format, arg1, arg2);
+      log(SELF, Level.INFO, ft.getMessage(), ft.getThrowable());
     }
   }
 
@@ -344,8 +336,8 @@ public final class JDK14LoggerAdapter extends MarkerIgnoringBase implements
    */
   public void info(String format, Object[] argArray) {
     if (logger.isLoggable(Level.INFO)) {
-      String msgStr = MessageFormatter.arrayFormat(format, argArray);
-      log(SELF, Level.INFO, msgStr, null);
+      FormattingTuple ft = MessageFormatter.arrayFormat(format, argArray);
+      log(SELF, Level.INFO, ft.getMessage(), ft.getThrowable());
     }
   }
 
@@ -377,8 +369,8 @@ public final class JDK14LoggerAdapter extends MarkerIgnoringBase implements
   /**
    * Log a message object at the WARNING level.
    * 
-   * @param msg -
-   *          the message object to be logged
+   * @param msg
+   *          - the message object to be logged
    */
   public void warn(String msg) {
     if (logger.isLoggable(Level.WARNING)) {
@@ -402,8 +394,8 @@ public final class JDK14LoggerAdapter extends MarkerIgnoringBase implements
    */
   public void warn(String format, Object arg) {
     if (logger.isLoggable(Level.WARNING)) {
-      String msgStr = MessageFormatter.format(format, arg);
-      log(SELF, Level.WARNING, msgStr, null);
+      FormattingTuple ft = MessageFormatter.format(format, arg);
+      log(SELF, Level.WARNING, ft.getMessage(), ft.getThrowable());
     }
   }
 
@@ -425,8 +417,8 @@ public final class JDK14LoggerAdapter extends MarkerIgnoringBase implements
    */
   public void warn(String format, Object arg1, Object arg2) {
     if (logger.isLoggable(Level.WARNING)) {
-      String msgStr = MessageFormatter.format(format, arg1, arg2);
-      log(SELF, Level.WARNING, msgStr, null);
+      FormattingTuple ft = MessageFormatter.format(format, arg1, arg2);
+      log(SELF, Level.WARNING, ft.getMessage(), ft.getThrowable());
     }
   }
 
@@ -446,8 +438,8 @@ public final class JDK14LoggerAdapter extends MarkerIgnoringBase implements
    */
   public void warn(String format, Object[] argArray) {
     if (logger.isLoggable(Level.WARNING)) {
-      String msgStr = MessageFormatter.arrayFormat(format, argArray);
-      log(SELF, Level.WARNING, msgStr, null);
+      FormattingTuple ft = MessageFormatter.arrayFormat(format, argArray);
+      log(SELF, Level.WARNING, ft.getMessage(), ft.getThrowable());
     }
   }
 
@@ -478,8 +470,8 @@ public final class JDK14LoggerAdapter extends MarkerIgnoringBase implements
   /**
    * Log a message object at the SEVERE level.
    * 
-   * @param msg -
-   *          the message object to be logged
+   * @param msg
+   *          - the message object to be logged
    */
   public void error(String msg) {
     if (logger.isLoggable(Level.SEVERE)) {
@@ -503,8 +495,8 @@ public final class JDK14LoggerAdapter extends MarkerIgnoringBase implements
    */
   public void error(String format, Object arg) {
     if (logger.isLoggable(Level.SEVERE)) {
-      String msgStr = MessageFormatter.format(format, arg);
-      log(SELF, Level.SEVERE, msgStr, null);
+      FormattingTuple ft = MessageFormatter.format(format, arg);
+      log(SELF, Level.SEVERE, ft.getMessage(), ft.getThrowable());
     }
   }
 
@@ -526,8 +518,8 @@ public final class JDK14LoggerAdapter extends MarkerIgnoringBase implements
    */
   public void error(String format, Object arg1, Object arg2) {
     if (logger.isLoggable(Level.SEVERE)) {
-      String msgStr = MessageFormatter.format(format, arg1, arg2);
-      log(SELF, Level.SEVERE, msgStr, null);
+      FormattingTuple ft = MessageFormatter.format(format, arg1, arg2);
+      log(SELF, Level.SEVERE, ft.getMessage(), ft.getThrowable());
     }
   }
 
@@ -547,8 +539,8 @@ public final class JDK14LoggerAdapter extends MarkerIgnoringBase implements
    */
   public void error(String format, Object[] argArray) {
     if (logger.isLoggable(Level.SEVERE)) {
-      String msgStr = MessageFormatter.arrayFormat(format, argArray);
-      log(SELF, Level.SEVERE, msgStr, null);
+      FormattingTuple ft = MessageFormatter.arrayFormat(format, argArray);
+      log(SELF, Level.SEVERE, ft.getMessage(), ft.getThrowable());
     }
   }
 
@@ -626,9 +618,9 @@ public final class JDK14LoggerAdapter extends MarkerIgnoringBase implements
       record.setSourceMethodName(ste.getMethodName());
     }
   }
- 
+
   public void log(Marker marker, String callerFQCN, int level, String message,
-      Throwable t) {
+      Object[] argArray, Throwable t) {
     Level julLevel;
     switch (level) {
     case LocationAwareLogger.TRACE_INT:
@@ -650,12 +642,12 @@ public final class JDK14LoggerAdapter extends MarkerIgnoringBase implements
       throw new IllegalStateException("Level number " + level
           + " is not recognized.");
     }
-    // the logger.isLoggable check avoids the unconditional 
+    // the logger.isLoggable check avoids the unconditional
     // construction of location data for disabled log
-    // statements. As of 2008-07-31, callers of this method 
-    // do not perform this check. See also 
+    // statements. As of 2008-07-31, callers of this method
+    // do not perform this check. See also
     // http://bugzilla.slf4j.org/show_bug.cgi?id=90
-    if(logger.isLoggable(julLevel)) {
+    if (logger.isLoggable(julLevel)) {
       log(callerFQCN, julLevel, message, t);
     }
   }

@@ -1,50 +1,42 @@
-/*
- * Copyright (c) 2004-2005 SLF4J.ORG
- * Copyright (c) 2004-2005 QOS.ch
- *
+/**
+ * Copyright (c) 2004-2011 QOS.ch
  * All rights reserved.
  *
- * Permission is hereby granted, free of charge, to any person obtaining
- * a copy of this software and associated documentation files (the
+ * Permission is hereby granted, free  of charge, to any person obtaining
+ * a  copy  of this  software  and  associated  documentation files  (the
  * "Software"), to  deal in  the Software without  restriction, including
  * without limitation  the rights to  use, copy, modify,  merge, publish,
- * distribute, and/or sell copies of  the Software, and to permit persons
- * to whom  the Software is furnished  to do so, provided  that the above
- * copyright notice(s) and this permission notice appear in all copies of
- * the  Software and  that both  the above  copyright notice(s)  and this
- * permission notice appear in supporting documentation.
+ * distribute,  sublicense, and/or sell  copies of  the Software,  and to
+ * permit persons to whom the Software  is furnished to do so, subject to
+ * the following conditions:
+ *
+ * The  above  copyright  notice  and  this permission  notice  shall  be
+ * included in all copies or substantial portions of the Software.
  *
  * THE  SOFTWARE IS  PROVIDED  "AS  IS", WITHOUT  WARRANTY  OF ANY  KIND,
  * EXPRESS OR  IMPLIED, INCLUDING  BUT NOT LIMITED  TO THE  WARRANTIES OF
- * MERCHANTABILITY, FITNESS FOR  A PARTICULAR PURPOSE AND NONINFRINGEMENT
- * OF  THIRD PARTY  RIGHTS. IN  NO EVENT  SHALL THE  COPYRIGHT  HOLDER OR
- * HOLDERS  INCLUDED IN  THIS  NOTICE BE  LIABLE  FOR ANY  CLAIM, OR  ANY
- * SPECIAL INDIRECT  OR CONSEQUENTIAL DAMAGES, OR  ANY DAMAGES WHATSOEVER
- * RESULTING FROM LOSS  OF USE, DATA OR PROFITS, WHETHER  IN AN ACTION OF
- * CONTRACT, NEGLIGENCE  OR OTHER TORTIOUS  ACTION, ARISING OUT OF  OR IN
- * CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
- *
- * Except as  contained in  this notice, the  name of a  copyright holder
- * shall not be used in advertising or otherwise to promote the sale, use
- * or other dealings in this Software without prior written authorization
- * of the copyright holder.
+ * MERCHANTABILITY,    FITNESS    FOR    A   PARTICULAR    PURPOSE    AND
+ * NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
+ * LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
+ * OF CONTRACT, TORT OR OTHERWISE,  ARISING FROM, OUT OF OR IN CONNECTION
+ * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  *
  */
-
 package org.slf4j.impl;
 
+import org.slf4j.helpers.FormattingTuple;
 import org.slf4j.helpers.MarkerIgnoringBase;
 import org.slf4j.helpers.MessageFormatter;
 
 /**
- * A simple (and direct) implementation that logs messages of level
- * INFO or higher on the console (<code>System.err<code>).
- *
+ * A simple (and direct) implementation that logs messages of level INFO or
+ * higher on the console (<code>System.err<code>).
+ * 
  * <p>The output includes the relative time in milliseconds, thread
  * name, the level, logger name, and the message followed by the line
  * separator for the host.  In log4j terms it amounts to the "%r [%t]
  * %level %logger - %m%n" pattern. </p>
- *
+ * 
  * <p>Sample output follows.</p>
 <pre>
 176 [main] INFO examples.Sort - Populating an array of 2 elements in reverse order.
@@ -58,19 +50,19 @@ import org.slf4j.helpers.MessageFormatter;
         at org.log4j.examples.Sort.main(Sort.java:64)
 467 [main] INFO  examples.Sort - Exiting main method.
 </pre>
- *
+ * 
  * @author Ceki G&uuml;lc&uuml;
  */
 public class SimpleLogger extends MarkerIgnoringBase {
-  
+
   private static final long serialVersionUID = -6560244151660620173L;
- 
+
   /**
    * Mark the time when this class gets loaded into memory.
    */
   private static long startTime = System.currentTimeMillis();
-  public static final String LINE_SEPARATOR =
-    System.getProperty("line.separator");
+  public static final String LINE_SEPARATOR = System
+      .getProperty("line.separator");
   private static String INFO_STR = "INFO";
   private static String WARN_STR = "WARN";
   private static String ERROR_STR = "ERROR";
@@ -85,6 +77,7 @@ public class SimpleLogger extends MarkerIgnoringBase {
 
   /**
    * Always returns false.
+   * 
    * @return always false
    */
   public boolean isTraceEnabled() {
@@ -92,25 +85,24 @@ public class SimpleLogger extends MarkerIgnoringBase {
   }
 
   /**
-   * A NOP implementation, as this logger is permanently disabled for
-   * the TRACE level.
+   * A NOP implementation, as this logger is permanently disabled for the TRACE
+   * level.
    */
   public void trace(String msg) {
     // NOP
   }
 
   /**
-   * A NOP implementation, as this logger is permanently disabled for
-   * the TRACE level.
+   * A NOP implementation, as this logger is permanently disabled for the TRACE
+   * level.
    */
   public void trace(String format, Object param1) {
     // NOP
   }
 
-  
   /**
-   * A NOP implementation, as this logger is permanently disabled for
-   * the TRACE level.
+   * A NOP implementation, as this logger is permanently disabled for the TRACE
+   * level.
    */
   public void trace(String format, Object param1, Object param2) {
     // NOP
@@ -119,18 +111,18 @@ public class SimpleLogger extends MarkerIgnoringBase {
   public void trace(String format, Object[] argArray) {
     // NOP
   }
-  
+
   /**
-   * A NOP implementation, as this logger is permanently disabled for
-   * the TRACE level.
+   * A NOP implementation, as this logger is permanently disabled for the TRACE
+   * level.
    */
   public void trace(String msg, Throwable t) {
     // NOP
   }
 
-  
   /**
    * Always returns false.
+   * 
    * @return always false
    */
   public boolean isDebugEnabled() {
@@ -138,25 +130,24 @@ public class SimpleLogger extends MarkerIgnoringBase {
   }
 
   /**
-   * A NOP implementation, as this logger is permanently disabled for
-   * the DEBUG level.
+   * A NOP implementation, as this logger is permanently disabled for the DEBUG
+   * level.
    */
   public void debug(String msg) {
     // NOP
   }
 
   /**
-   * A NOP implementation, as this logger is permanently disabled for
-   * the DEBUG level.
+   * A NOP implementation, as this logger is permanently disabled for the DEBUG
+   * level.
    */
   public void debug(String format, Object param1) {
     // NOP
   }
 
-  
   /**
-   * A NOP implementation, as this logger is permanently disabled for
-   * the DEBUG level.
+   * A NOP implementation, as this logger is permanently disabled for the DEBUG
+   * level.
    */
   public void debug(String format, Object param1, Object param2) {
     // NOP
@@ -165,10 +156,10 @@ public class SimpleLogger extends MarkerIgnoringBase {
   public void debug(String format, Object[] argArray) {
     // NOP
   }
-  
+
   /**
-   * A NOP implementation, as this logger is permanently disabled for
-   * the DEBUG level.
+   * A NOP implementation, as this logger is permanently disabled for the DEBUG
+   * level.
    */
   public void debug(String msg, Throwable t) {
     // NOP
@@ -177,7 +168,7 @@ public class SimpleLogger extends MarkerIgnoringBase {
   /**
    * This is our internal implementation for logging regular (non-parameterized)
    * log messages.
-   *
+   * 
    * @param level
    * @param message
    * @param t
@@ -211,18 +202,18 @@ public class SimpleLogger extends MarkerIgnoringBase {
 
   /**
    * For formatted messages, first substitute arguments and then log.
-   *
+   * 
    * @param level
    * @param format
    * @param param1
    * @param param2
    */
-  private void formatAndLog(
-    String level, String format, Object arg1, Object arg2) {
-    String message = MessageFormatter.format(format, arg1, arg2);
-    log(level, message, null);
+  private void formatAndLog(String level, String format, Object arg1,
+      Object arg2) {
+    FormattingTuple tp = MessageFormatter.format(format, arg1, arg2);
+    log(level, tp.getMessage(), tp.getThrowable());
   }
-  
+
   /**
    * For formatted messages, first substitute arguments and then log.
    * 
@@ -231,8 +222,8 @@ public class SimpleLogger extends MarkerIgnoringBase {
    * @param argArray
    */
   private void formatAndLog(String level, String format, Object[] argArray) {
-    String message = MessageFormatter.arrayFormat(format, argArray);
-    log(level, message, null);
+    FormattingTuple tp = MessageFormatter.arrayFormat(format, argArray);
+    log(level, tp.getMessage(), tp.getThrowable());
   }
 
   /**
@@ -274,7 +265,6 @@ public class SimpleLogger extends MarkerIgnoringBase {
     formatAndLog(INFO_STR, format, argArray);
   }
 
-
   /**
    * Log a message of level INFO, including an exception.
    */
@@ -288,11 +278,11 @@ public class SimpleLogger extends MarkerIgnoringBase {
   public boolean isWarnEnabled() {
     return true;
   }
-  
+
   /**
    * A simple implementation which always logs messages of level WARN according
    * to the format outlined above.
-  */
+   */
   public void warn(String msg) {
     log(WARN_STR, msg, null);
   }
@@ -367,7 +357,6 @@ public class SimpleLogger extends MarkerIgnoringBase {
     formatAndLog(ERROR_STR, format, argArray);
   }
 
-  
   /**
    * Log a message of level ERROR, including an exception.
    */
